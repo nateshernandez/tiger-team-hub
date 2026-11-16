@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["src/app/routes/**/*.tsx"],
+  "project": ["src/**/*.{ts,tsx,css}"],
+  "ignore": [
+    "src/app/route-tree.gen.ts",
+    "src/components/ui/**",
+    "src/lib/utils.ts"
+  ],
+  "ignoreDependencies": ["lucide-react", "zod"]
+}

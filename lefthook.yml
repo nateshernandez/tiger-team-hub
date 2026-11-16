@@ -1,0 +1,17 @@
+# Fast checks on staged files. CI runs the full `pnpm check`.
+pre-commit:
+  parallel: true
+  jobs:
+    - name: prettier
+      glob: "*.{ts,tsx,js,json,css,md,yml,yaml}"
+      run: pnpm exec prettier --write {staged_files}
+      stage_fixed: true
+    - name: eslint
+      glob: "*.{ts,tsx,js}"
+      run: pnpm exec eslint --fix --no-warn-ignored --max-warnings 0 {staged_files}
+      stage_fixed: true
+
+pre-push:
+  jobs:
+    - name: typecheck
+      run: pnpm typecheck

@@ -1,21 +1,23 @@
-# React + TypeScript + Vite + shadcn/ui
+# Tiger Team Hub
 
-This is a template for a new Vite project with React, TypeScript, and shadcn/ui.
+A hub of artifacts the team uses to plan and build agents into our platform.
 
-## Adding components
-
-To add components to your app, run the following command:
+## Getting started
 
 ```bash
-npx shadcn@latest add button
+pnpm install   # also installs git hooks (Lefthook)
+pnpm dev
 ```
 
-This will place the ui components in the `src/components` directory.
+For full TypeScript code intelligence in Claude Code, install the language
+server once:
 
-## Using components
-
-To use the components in your app, import them as follows:
-
-```tsx
-import { Button } from "@/components/ui/button"
+```bash
+npm install -g typescript-language-server typescript
 ```
+
+## Conventions
+
+All conventions for architecture, naming, TypeScript, React, testing and PRs
+are in [`CLAUDE.md`](./CLAUDE.md). The same file guides both people and Claude
+Code. Lint enforces most of it. Run `pnpm check` before opening a PR.
