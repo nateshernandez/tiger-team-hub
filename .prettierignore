@@ -7,3 +7,5 @@ pnpm-lock.yaml
 yarn.lock
 dist/
 src/app/route-tree.gen.ts
+# Per-developer Claude Code settings: untracked, and rewritten by Claude Code.
+.claude/settings.local.json

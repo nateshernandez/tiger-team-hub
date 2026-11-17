@@ -46,6 +46,24 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --font-mono:
+    ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Term roles: one hue each, used the same way in every view. */
+  --color-role-input: var(--role-input);
+  --color-role-input-surface: var(--role-input-surface);
+  --color-role-input-foreground: var(--role-input-foreground);
+  --color-role-decide: var(--role-decide);
+  --color-role-decide-surface: var(--role-decide-surface);
+  --color-role-decide-foreground: var(--role-decide-foreground);
+  --color-role-act: var(--role-act);
+  --color-role-act-surface: var(--role-act-surface);
+  --color-role-act-foreground: var(--role-act-foreground);
+  --color-role-oversight: var(--role-oversight);
+  --color-role-oversight-surface: var(--role-oversight-surface);
+  --color-role-oversight-foreground: var(--role-oversight-foreground);
+  --color-canvas: var(--canvas);
+  --color-canvas-dot: var(--canvas-dot);
 }
 
 :root {
@@ -60,7 +78,8 @@
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  /* Darker than the shadcn default so muted text passes 4.5:1 on muted surfaces too. */
+  --muted-foreground: oklch(0.5 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
@@ -81,6 +100,21 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --canvas: oklch(0.985 0.002 260);
+  --canvas-dot: oklch(0.86 0.004 260);
+  --role-input: oklch(0.55 0.17 255);
+  --role-input-surface: oklch(0.965 0.018 255);
+  --role-input-foreground: oklch(0.43 0.15 255);
+  --role-decide: oklch(0.53 0.19 295);
+  --role-decide-surface: oklch(0.965 0.02 295);
+  --role-decide-foreground: oklch(0.42 0.17 295);
+  --role-act: oklch(0.55 0.12 170);
+  --role-act-surface: oklch(0.965 0.025 170);
+  --role-act-foreground: oklch(0.42 0.09 170);
+  --role-oversight: oklch(0.64 0.15 65);
+  --role-oversight-surface: oklch(0.97 0.03 75);
+  --role-oversight-foreground: oklch(0.46 0.11 60);
 }
 
 .dark {
@@ -115,6 +149,21 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  --canvas: oklch(0.17 0.004 260);
+  --canvas-dot: oklch(0.3 0.006 260);
+  --role-input: oklch(0.7 0.14 255);
+  --role-input-surface: oklch(0.26 0.05 255);
+  --role-input-foreground: oklch(0.84 0.09 255);
+  --role-decide: oklch(0.7 0.15 295);
+  --role-decide-surface: oklch(0.26 0.06 295);
+  --role-decide-foreground: oklch(0.85 0.09 295);
+  --role-act: oklch(0.72 0.11 170);
+  --role-act-surface: oklch(0.25 0.04 170);
+  --role-act-foreground: oklch(0.85 0.08 170);
+  --role-oversight: oklch(0.78 0.13 75);
+  --role-oversight-surface: oklch(0.27 0.05 70);
+  --role-oversight-foreground: oklch(0.87 0.1 80);
 }
 
 @layer base {
@@ -125,6 +174,20 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-sans;
+    @apply font-sans antialiased;
+    /* Always keep room for the scrollbar, so switching between a page that
+       scrolls and one that doesn't never shifts the layout sideways. */
+    scrollbar-gutter: stable;
   }
+}
+
+/* React Flow's attribution, quiet in the canvas corner. Unlayered so it wins
+   over React Flow's own unlayered stylesheet. */
+.react-flow .react-flow__attribution {
+  background: transparent;
+  padding: 2px 8px;
+  font-size: 10px;
+}
+.react-flow .react-flow__attribution a {
+  color: var(--muted-foreground);
 }

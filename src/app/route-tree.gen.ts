@@ -10,33 +10,65 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AgentWorksRouteImport } from './routes/agent-works'
+import { Route as AgentWorksIndexRouteImport } from './routes/agent-works.index'
+import { Route as AgentWorksGlossaryRouteImport } from './routes/agent-works.glossary'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AgentWorksRoute = AgentWorksRouteImport.update({
+  id: '/agent-works',
+  path: '/agent-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AgentWorksIndexRoute = AgentWorksIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AgentWorksRoute,
+} as any)
+const AgentWorksGlossaryRoute = AgentWorksGlossaryRouteImport.update({
+  id: '/glossary',
+  path: '/glossary',
+  getParentRoute: () => AgentWorksRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/agent-works': typeof AgentWorksRouteWithChildren
+  '/agent-works/glossary': typeof AgentWorksGlossaryRoute
+  '/agent-works/': typeof AgentWorksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/agent-works/glossary': typeof AgentWorksGlossaryRoute
+  '/agent-works': typeof AgentWorksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/agent-works': typeof AgentWorksRouteWithChildren
+  '/agent-works/glossary': typeof AgentWorksGlossaryRoute
+  '/agent-works/': typeof AgentWorksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/agent-works' | '/agent-works/glossary' | '/agent-works/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/agent-works/glossary' | '/agent-works'
+  id:
+    | '__root__'
+    | '/'
+    | '/agent-works'
+    | '/agent-works/glossary'
+    | '/agent-works/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AgentWorksRoute: typeof AgentWorksRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +80,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/agent-works': {
+      id: '/agent-works'
+      path: '/agent-works'
+      fullPath: '/agent-works'
+      preLoaderRoute: typeof AgentWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/agent-works/': {
+      id: '/agent-works/'
+      path: '/'
+      fullPath: '/agent-works/'
+      preLoaderRoute: typeof AgentWorksIndexRouteImport
+      parentRoute: typeof AgentWorksRoute
+    }
+    '/agent-works/glossary': {
+      id: '/agent-works/glossary'
+      path: '/glossary'
+      fullPath: '/agent-works/glossary'
+      preLoaderRoute: typeof AgentWorksGlossaryRouteImport
+      parentRoute: typeof AgentWorksRoute
+    }
   }
 }
 
+interface AgentWorksRouteChildren {
+  AgentWorksGlossaryRoute: typeof AgentWorksGlossaryRoute
+  AgentWorksIndexRoute: typeof AgentWorksIndexRoute
+}
+
+const AgentWorksRouteChildren: AgentWorksRouteChildren = {
+  AgentWorksGlossaryRoute: AgentWorksGlossaryRoute,
+  AgentWorksIndexRoute: AgentWorksIndexRoute,
+}
+
+const AgentWorksRouteWithChildren = AgentWorksRoute._addFileChildren(
+  AgentWorksRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AgentWorksRoute: AgentWorksRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
